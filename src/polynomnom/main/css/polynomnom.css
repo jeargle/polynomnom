@@ -1,0 +1,86 @@
+
+
+/***********************/
+/* Clean Sticky Footer */
+/***********************/
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Arial Bold", Helvetica, sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    /* background-color: rgb(239,239,239); */
+    overflow: hidden;
+}
+
+/* Make text in element selectable */
+.selectable-text {
+    -webkit-user-select: text;
+     -khtml-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
+}
+
+/* Truncate with ellipsis */
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
+/* a:link, a:visited { */
+a {
+    font-weight: none;
+    text-decoration: none;
+    outline: none;
+    color: white;
+}
+
+#container {
+    width: 90%;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin-bottom: -141px;
+    margin-left: 10px;
+}
+
+#content {
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 141px;
+    padding-left: 10px;
+}
+
+
+#menubar1 {
+    height: 40px;
+    width: 100%;
+    background-color: green;
+}
+
+.menubar1-btn {
+    float: left;
+    height: 40px;
+    width: 120px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}
+
+.menubar1-btn:hover {
+    background-color: darkgreen;
+}
