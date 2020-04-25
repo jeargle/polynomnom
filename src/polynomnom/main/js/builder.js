@@ -1,5 +1,5 @@
 /* JSLint */
-/*global console: false, extend: false*/
+/*global console: false, d3: false*/
 
 
 /**
@@ -24,9 +24,40 @@ class Polynomial {
         this.setCoeffs(coeffs)
     }
 
+    /**
+     *
+     */
     setCoeffs(coeffs) {
         let model = this
         model.coeffs = coeffs
+        model.setPolyFunc()
+        // model.polyFunc = (x) => {
+        //     let sum = 0
+        //     for (let i=0; i<model.coeffs.length; i++) {
+        //         if (model.coeffs[i] !== 0) {
+        //             sum += model.coeffs[i] * x**i
+        //         }
+        //     }
+        //     return sum
+        // }
+    }
+
+    /**
+     *
+     * @param coeff {number}
+     * @param idx {number} - index into coefficient list; order of the element
+     */
+    setCoeff(coeff, idx) {
+        let model = this
+        model.coeffs[idx] = coeff
+        model.setPolyFunc()
+    }
+
+    /**
+     * Build polyFunc for evaluating Polynomial at a point x
+     */
+    setPolyFunc() {
+        let model = this
         model.polyFunc = (x) => {
             let sum = 0
             for (let i=0; i<model.coeffs.length; i++) {
@@ -50,6 +81,75 @@ class Polynomial {
         return yArray
     }
 }
+
+
+/**
+ * PolynomialRow
+ */
+class PolynomialRow {
+    polynomial = null
+
+    constructor(polynomial) {
+        if (polynomial == null) {
+            polynomial = new Polynomial([0, 1])
+        }
+        this.polynomial = polynomial
+    }
+
+    render() {
+
+    }
+}
+
+
+/**
+ * PolynomialList
+ */
+class PolynomialList {
+    rows = null
+
+    constructor(polynomials=[]) {
+        this.rows = []
+        for (let i=0; i<polynomials.length; i++) {
+            this.rows.push(new PolynomialRow(polynomials[i]))
+        }
+    }
+
+    render() {
+
+    }
+
+    /**
+     * Add Polynomial to list
+     * @param polynomial {Polynomial}
+     * @param idx {number} - index into polynomial list
+     */
+    addPolynomial(polynomial, idx) {
+        let view = this
+
+        view.render()
+    }
+
+    /**
+     * Remove Polynomial from list
+     * @param idx {number} - index into polynomial list
+     */
+    removePolynomial(idx) {
+        let view = this
+
+        view.render()
+    }
+
+    /**
+     * Remove all Polynomials from list
+     */
+    clear() {
+        let view = this
+
+        view.render()
+    }
+}
+
 
 /**
  * Plotter
