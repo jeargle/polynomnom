@@ -41,12 +41,13 @@ class Polynomial {
     /**
      *
      */
-    y(xArray) {
+    yArray(xArray) {
         let model = this
         let yArray = []
         for (let i=0; i<xArray.length; i++) {
-            yArray.push(model.polyfunc(xArray[i]))
+            yArray.push(model.polyFunc(xArray[i]))
         }
+        return yArray
     }
 }
 
@@ -60,8 +61,9 @@ class Plotter {
     yMax = null
     xArray = []     // set of points on x-axis
 
-    constructor(plotId='plot', xArray=[]) {
+    constructor(plotId='plot', polynomials, xArray=[]) {
         this.plotId = plotId
+        this.polynomials = polynomials
         this.xArray = xArray
     }
 
@@ -91,9 +93,10 @@ class Plotter {
         for (let i=0; i<model.polynomials.length; i++) {
             plotData.push({
                 x: model.xArray,
-                y: model.polynomials[i].y(model.xArray)
+                y: model.polynomials[i].yArray(model.xArray)
             })
         }
+        console.log(plotData)
         Plotly.newPlot(
             plotDiv,
             plotData,
@@ -108,8 +111,8 @@ $(document).ready(function() {
 
     let plotter1 = new Plotter(
         'plot',
-        new Polynomial(),
-        range(0, 201, 20)
+        [new Polynomial([0, 1, 4]), new Polynomial([0, 1, 2, 1])],
+        range(-5, 6, 0.5)
     )
     plotter1.plot()
 })
