@@ -104,8 +104,37 @@ class PolynomialRow {
     render() {
         let view = this
 
-        view.el.classed('polynomial-row', true)
-            .text(view.polynomial.coeffs.join(', '))
+        let terms = this.el.selectAll('span')
+            .data(view.polynomial.coeffs)
+        terms.enter()
+            .append('span')
+            .classed('term', true)
+            .each(function(d, i) {
+                view.addTerm.apply(view, [this, d, i])
+            })
+        terms.exit().remove()
+    }
+
+    /**
+     * Add editable term to polynomial display
+     * @param span {span} - span element
+     * @param coeff {number} - coefficient for this term
+     * @param idx {number} - index into coefficient list
+     */
+    addTerm(span, coeff, idx) {
+        let term = d3.select(span)
+        if (idx > 0) {
+            term.append('span')
+                .text('+')
+        }
+        term.append('input')
+            .classed('coefficient', true)
+            .property('type', 'text')
+            .property('value', coeff)
+        term.append('span')
+            .text('x')
+            .append('sup')
+            .text(parseInt(idx))
     }
 }
 
