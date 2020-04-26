@@ -87,6 +87,7 @@ class Polynomial {
  * PolynomialRow
  */
 class PolynomialRow {
+    el = null
     polynomial = null
 
     constructor(polynomial) {
@@ -96,8 +97,15 @@ class PolynomialRow {
         this.polynomial = polynomial
     }
 
-    render() {
+    setEl(el) {
+        this.el = el
+    }
 
+    render() {
+        let view = this
+
+        view.el.classed('polynomial-row', true)
+            .text(view.polynomial.coeffs.join(', '))
     }
 }
 
@@ -106,17 +114,57 @@ class PolynomialRow {
  * PolynomialList
  */
 class PolynomialList {
+    elId = '#polynomial-list'
+    el = null
     rows = null
+    plotter = null
 
-    constructor(polynomials=[]) {
+    constructor(polynomials=[], elId) {
         this.rows = []
         for (let i=0; i<polynomials.length; i++) {
             this.rows.push(new PolynomialRow(polynomials[i]))
         }
+        if (elId != null) {
+            this.elId = elId
+        }
+        this.el = d3.select(this.elId)
+
+        this.plotter = new Plotter(
+            'plot',
+            this.rows.map(r => r.polynomial),
+            range(-5, 6, 0.5)
+        )
+
+        this.render()
     }
 
     render() {
+        let view = this
+        let ul = view.el.selectAll('#polynomials')
+        let li = ul.selectAll('li')
+            .data(view.rows)
+        li.enter()
+            .append('li')
+            .each(function(d) {
+                view.addRow.apply(view, [this, d])
+            })
+        li.exit().remove()
+        // li.order()
 
+        view.plotter.plot()
+    }
+
+    /**
+     * Add Polynomial to list
+     * @param polynomial {Polynomial}
+     * @param idx {number} - index into polynomial list
+     */
+    addRow(li, row) {
+        let view = this
+
+        let rowLi = d3.select(li).append('div')
+        row.setEl(rowLi)
+        row.render()
     }
 
     /**
@@ -168,14 +216,6 @@ class Plotter {
     }
 
     /**
-     * Set ecosym model
-     * @param ecoModel {Object} - ecosym model
-     */
-    setEcoModel(ecoModel) {
-        this.ecoModel = ecoModel
-    }
-
-    /**
      * Set xArray
      * @param xArray {array} - x-axis coordinates
      */
@@ -184,7 +224,7 @@ class Plotter {
     }
 
     /**
-     * Plot the ecosym model
+     * Plot the Polynomials
      */
     plot() {
         let model = this
@@ -209,10 +249,8 @@ class Plotter {
 $(document).ready(function() {
     'use strict'
 
-    let plotter1 = new Plotter(
-        'plot',
-        [new Polynomial([0, 1, 4]), new Polynomial([0, 1, 2, 1])],
-        range(-5, 6, 0.5)
-    )
-    plotter1.plot()
+    let pl = new PolynomialList([
+        new Polynomial([0, 1, 4]),
+        new Polynomial([0, 1, 2, 1])
+    ])
 })

@@ -20,7 +20,7 @@ body {
     user-select: none;
     cursor: default;
     /* background-color: rgb(239,239,239); */
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 /* Make text in element selectable */
@@ -53,15 +53,16 @@ a {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin-bottom: -141px;
-    margin-left: 10px;
+    /* margin-bottom: -141px; */
+    /* margin-left: 10px; */
 }
 
 #content {
     width: 100%;
     padding-top: 10px;
-    padding-bottom: 141px;
+    /* padding-bottom: 141px; */
     padding-left: 10px;
+    /* overflow-y: auto; */
 }
 
 
@@ -83,4 +84,27 @@ a {
 
 .menubar1-btn:hover {
     background-color: darkgreen;
+}
+
+
+/******************/
+/* Polynomial-Row */
+/******************/
+
+#polynomial-list {
+    width: 600px;
+}
+
+
+/******************/
+/* Polynomial-Row */
+/******************/
+
+.polynomial-row {
+    height: 40px;
+    width: 600px;
+    padding-left: 10px;
+    line-height: 40px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
