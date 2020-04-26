@@ -23,6 +23,11 @@ body {
     /* overflow: hidden; */
 }
 
+sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
 /* Make text in element selectable */
 .selectable-text {
     -webkit-user-select: text;
@@ -101,6 +106,7 @@ a {
 /******************/
 
 .polynomial-row {
+    clear: both;
     height: 40px;
     width: 600px;
     padding-left: 10px;
@@ -110,12 +116,42 @@ a {
     border-radius: 5px;
 }
 
-.coefficient {
+/* .term { */
+/*     float: left; */
+/*     height: 40px; */
+/* } */
+
+.term-coefficient {
+    float: left;
+    height: 30px;
     width: 30px;
+    margin-top: 5px;
+    line-height: 30px;
     font-size: 16px;
+    text-align: center;
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-sup {
-    vertical-align: super;
-    font-size: smaller;
+.term-coefficient:hover {
+    border: 2px solid lightblue;
+}
+
+.term-coefficient:focus {
+    border: 2px solid darkblue;
+    cursor: auto;
+}
+
+.term-sign {
+    float: left;
+    width: 25px;
+    font-size: 16px;
+    text-align: right;
+}
+
+.term-order {
+    float: left;
+    height: 40px;
+    line-height: 32px;
 }

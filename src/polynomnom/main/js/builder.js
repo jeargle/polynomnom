@@ -107,7 +107,7 @@ class PolynomialRow {
         let terms = this.el.selectAll('span')
             .data(view.polynomial.coeffs)
         terms.enter()
-            .append('span')
+            .append('div')
             .classed('term', true)
             .each(function(d, i) {
                 view.addTerm.apply(view, [this, d, i])
@@ -124,14 +124,16 @@ class PolynomialRow {
     addTerm(span, coeff, idx) {
         let term = d3.select(span)
         if (idx > 0) {
-            term.append('span')
+            term.append('div')
+                .classed('term-sign', true)
                 .text('+')
         }
         term.append('input')
-            .classed('coefficient', true)
+            .classed('term-coefficient', true)
             .property('type', 'text')
             .property('value', coeff)
-        term.append('span')
+        term.append('div')
+            .classed('term-order', true)
             .text('x')
             .append('sup')
             .text(parseInt(idx))
@@ -191,7 +193,9 @@ class PolynomialList {
     addRow(li, row) {
         let view = this
 
-        let rowLi = d3.select(li).append('div')
+        let rowLi = d3.select(li)
+            .append('div')
+            .classed('polynomial-row', true)
         row.setEl(rowLi)
         row.render()
     }
