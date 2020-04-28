@@ -26,20 +26,12 @@ class Polynomial {
 
     /**
      *
+     * @param coeff {[number]}
      */
     setCoeffs(coeffs) {
         let model = this
         model.coeffs = coeffs
         model.setPolyFunc()
-        // model.polyFunc = (x) => {
-        //     let sum = 0
-        //     for (let i=0; i<model.coeffs.length; i++) {
-        //         if (model.coeffs[i] !== 0) {
-        //             sum += model.coeffs[i] * x**i
-        //         }
-        //     }
-        //     return sum
-        // }
     }
 
     /**
@@ -89,12 +81,14 @@ class Polynomial {
 class PolynomialRow {
     el = null
     polynomial = null
+    plotter = null
 
-    constructor(polynomial) {
+    constructor(polynomial, list) {
         if (polynomial == null) {
             polynomial = new Polynomial([0, 1])
         }
         this.polynomial = polynomial
+        this.list = list
     }
 
     setEl(el) {
@@ -122,6 +116,7 @@ class PolynomialRow {
      * @param idx {number} - index into coefficient list
      */
     addTerm(span, coeff, idx) {
+        let view = this
         let term = d3.select(span)
         if (idx > 0) {
             term.append('div')
@@ -132,6 +127,16 @@ class PolynomialRow {
             .classed('term-coefficient', true)
             .property('type', 'text')
             .property('value', coeff)
+            .on('blur', function() {
+                view.polynomial.setCoeff(this.value, idx)
+                view.list.plot()
+            })
+            .on('keydown', function (d, e) {
+                if (d3.event.code == 'Enter') {
+                    // Enter key pressed
+                    $(this).blur()
+                }
+            })
         term.append('div')
             .classed('term-order', true)
             .text('x')
@@ -153,7 +158,7 @@ class PolynomialList {
     constructor(polynomials=[], elId) {
         this.rows = []
         for (let i=0; i<polynomials.length; i++) {
-            this.rows.push(new PolynomialRow(polynomials[i]))
+            this.rows.push(new PolynomialRow(polynomials[i], this))
         }
         if (elId != null) {
             this.elId = elId
@@ -163,7 +168,7 @@ class PolynomialList {
         this.plotter = new Plotter(
             'plot',
             this.rows.map(r => r.polynomial),
-            range(-5, 6, 0.5)
+            range(-5, 5.5, 0.5)
         )
 
         this.render()
@@ -182,7 +187,11 @@ class PolynomialList {
         li.exit().remove()
         // li.order()
 
-        view.plotter.plot()
+        view.plot()
+    }
+
+    plot() {
+        this.plotter.plot()
     }
 
     /**
@@ -263,13 +272,14 @@ class Plotter {
         let model = this
         let plotDiv = document.getElementById(model.plotId)
         let plotData = []
+
         for (let i=0; i<model.polynomials.length; i++) {
             plotData.push({
                 x: model.xArray,
                 y: model.polynomials[i].yArray(model.xArray)
             })
         }
-        console.log(plotData)
+
         Plotly.newPlot(
             plotDiv,
             plotData,
