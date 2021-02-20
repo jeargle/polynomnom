@@ -95,10 +95,18 @@ class PolynomialRow {
         this.el = el
     }
 
+    remove() {
+        console.log('PolynomialRow.remove()')
+        let view = this
+
+        view.list.removePolynomial(view)
+        view.list.plot()
+    }
+
     render() {
         let view = this
 
-        let terms = this.el.selectAll('span')
+        let terms = view.el.selectAll('span')
             .data(view.polynomial.coeffs)
         terms.enter()
             .append('div')
@@ -107,6 +115,15 @@ class PolynomialRow {
                 view.addTerm.apply(view, [this, d, i])
             })
         terms.exit().remove()
+
+        let controls = view.el.append('div')
+            .classed('row-controls', true)
+
+        // Delete button
+        controls.append('button')
+            .classed('row-delete', true)
+            .on('click', view.remove.bind(view))
+            .text('Delete')
     }
 
     /**
@@ -217,15 +234,25 @@ class PolynomialList {
     addPolynomial(polynomial, idx) {
         let view = this
 
+        view.plotter.setPolynomials(view.rows.map(row => row.polynomial))
         view.render()
     }
 
     /**
      * Remove Polynomial from list
-     * @param idx {number} - index into polynomial list
+     * @param polynomial {PolynomialRow}
      */
-    removePolynomial(idx) {
+    removePolynomial(polynomial) {
         let view = this
+
+        for (let i=0; i<view.rows.length; i++) {
+            if (polynomial.id == view.rows[i].id) {
+                view.rows.splice(i, 1)
+                break
+            }
+        }
+
+        view.plotter.setPolynomials(view.rows.map(row => row.polynomial))
 
         view.render()
     }
@@ -255,6 +282,14 @@ class Plotter {
         this.plotId = plotId
         this.polynomials = polynomials
         this.xArray = xArray
+    }
+
+    /**
+     * Set Polynomial list
+     * @param polynomials {Array} - array of Polynomials
+     */
+    setPolynomials(polynomials) {
+        this.polynomials = polynomials
     }
 
     /**

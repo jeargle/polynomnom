@@ -110,10 +110,35 @@ a {
     height: 40px;
     width: 600px;
     padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 5px;
     line-height: 40px;
     font-size: 16px;
     border: 2px solid black;
     border-radius: 5px;
+}
+
+.row-equation {
+    float: left;
+    height: 40px;
+    width: 400px;
+}
+
+.row-controls {
+    float: right;
+    height: 40px;
+    width: 180px;
+}
+
+.row-active {
+    float: right;
+    padding-top: 10px;
+    width: 30px;
+}
+
+.row-delete {
+    float: right;
+    margin-top: 10px;
 }
 
 /* .term { */
